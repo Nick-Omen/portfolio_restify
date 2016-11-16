@@ -1,0 +1,16 @@
+{
+  "name": "portfolio-api",
+  "version": "1.0.0",
+  "description": "REST-api for my portfolio.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "mysql": "^2.11.1",
+    "restify": "^4.2.0"
+  }
+}
