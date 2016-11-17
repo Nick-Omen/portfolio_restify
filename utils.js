@@ -1,17 +1,18 @@
 "use strict";
 
 var server = require('./server');
+var config = require('./config');
 
 var appendServerUrlToImages = function (objs, keys) {
 
-    var serverUrl = server.url;
+    var serverUrl = config.serverUrl;
 
     for (var i in objs) {
         if (objs.hasOwnProperty(i)) {
             var obj = objs[i];
             for (var key in obj) {
                 if (obj.hasOwnProperty(key) && keys.indexOf(key) >= 0 && obj[key].length !== 0) {
-                    objs[i][key] = serverUrl + '/' + obj[key];
+                    objs[i][key] = serverUrl + obj[key];
                 }
             }
         }

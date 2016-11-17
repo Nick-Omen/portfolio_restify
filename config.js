@@ -12,6 +12,7 @@ if(process.env && process.env.NODE_ENV === 'dev') {
             password: '',
             database: ''
         },
-        mongoDbUrl: ''
+        mongoDbUrl: '',
+        serverUrl: ''
     };
 }

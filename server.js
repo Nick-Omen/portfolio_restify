@@ -10,15 +10,18 @@ var sessionMiddleware = function (req, res, next) {
     return next();
 };
 
-var headersMiddleware = function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    return next();
-};
+if(process.env && process.env.NODE_ENV === 'dev') {
+
+    var allowCors = function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "X-Requested-With");
+        return next();
+    };
+    server.use(allowCors);
+}
 
 server
     .use(sessionMiddleware)
-    .use(headersMiddleware)
     .use(restify.fullResponse())
     .use(restify.bodyParser())
     .use(restify.queryParser());
