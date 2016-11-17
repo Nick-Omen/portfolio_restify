@@ -4,6 +4,7 @@ var db = require('./db');
 var server = require('./server');
 var works = require('./works');
 var technologies = require('./technologies');
+var users = require('./users');
 
 // Works
 server.get(/^\/works\/([\w_-]+)(|\/)$/, works.getWork);
@@ -12,6 +13,11 @@ server.get(/^\/works(|\/)$/, works.getWorks);
 // Technologies
 server.get(/^\/work-types(|\/)$/, technologies.getWorkTypes);
 server.get(/^\/technologies(|\/)$/, technologies.getTechnologies);
+
+// Users
+server.post(/^\/auth\/signup(|\/)$/, users.signUp);
+server.post(/^\/auth\/signin(|\/)$/, users.signIn);
+server.post(/^\/auth\/logout(|\/)$/, users.logOut);
 
 /**
  * Not allowed function.

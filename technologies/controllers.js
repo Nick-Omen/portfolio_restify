@@ -2,6 +2,17 @@
 
 var queries = require('./queries');
 
+/**
+ * @api {get} /work-types/ Get all work types
+ * @apiName Get Work Types
+ * @apiGroup WorkType
+ *
+ * @apiSuccess {json} List of work types
+ *
+ * @apiError {json} Error message
+ *
+ * @apiVersion 1.0.0
+ */
 var getWorkTypes = function (req, res, next) {
 
     queries
@@ -10,7 +21,7 @@ var getWorkTypes = function (req, res, next) {
             res.send(200, data);
             next();
         })
-        .catch(function (data) {
+        .catch(function () {
             res.send(400, {
                 message: 'Error.'
             });
@@ -18,6 +29,18 @@ var getWorkTypes = function (req, res, next) {
         });
 };
 
+
+/**
+ * @api {get} /technologies/ Get all technologies
+ * @apiName Get Technologies
+ * @apiGroup Technology
+ *
+ * @apiSuccess {json} List of technologies
+ *
+ * @apiError {json} Error message
+ *
+ * @apiVersion 1.0.0
+ */
 var getTechnologies = function (req, res, next) {
 
     queries

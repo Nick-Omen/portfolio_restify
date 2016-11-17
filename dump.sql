@@ -104,3 +104,12 @@ INSERT INTO technologies (`id`, `tech`, `slug`, `work_type`) VALUES
 (15, 'Angular 2', 'angular-2', '1,2'),
 (16, 'MySQL', 'my-sql', '1,2'),
 (17, 'NodeJS', 'node-js', '2');
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username CHAR(32) NOT NULL DEFAULT "",
+    email CHAR(64) NOT NULL DEFAULT "",
+    password CHAR(128) NOT NULL,
+    hash CHAR(32) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

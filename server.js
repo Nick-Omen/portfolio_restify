@@ -7,11 +7,10 @@ var server = restify.createServer({
 });
 
 var sessionMiddleware = function (req, res, next) {
-    console.log(req.session);
     return next();
 };
 
-var corsMiddleware = function (req, res, next) {
+var headersMiddleware = function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     return next();
@@ -19,7 +18,7 @@ var corsMiddleware = function (req, res, next) {
 
 server
     .use(sessionMiddleware)
-    .use(corsMiddleware)
+    .use(headersMiddleware)
     .use(restify.fullResponse())
     .use(restify.bodyParser())
     .use(restify.queryParser());

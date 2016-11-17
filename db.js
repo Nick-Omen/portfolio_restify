@@ -1,7 +1,7 @@
 "use strict";
 
 var mysql = require('mysql');
-var config = require('./omen.config');
+var config = require('./config');
 
 var connection = mysql.createConnection({
     host: config.db.host,
