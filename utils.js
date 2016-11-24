@@ -2,6 +2,7 @@
 
 var server = require('./server');
 var config = require('./config');
+var slug = require('slug');
 
 var appendServerUrlToImages = function (objs, keys) {
 
@@ -37,7 +38,12 @@ var splitFields = function (objs, keys) {
     return objs;
 };
 
+var getSlug = function (string) {
+    return slug(string, {lowercase: true});
+};
+
 module.exports = {
     appendServerUrlToImages: appendServerUrlToImages,
-    splitFields: splitFields
+    splitFields: splitFields,
+    getSlug: getSlug
 };

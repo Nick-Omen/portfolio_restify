@@ -4,7 +4,8 @@ var db = require('./db');
 var server = require('./server');
 var works = require('./works');
 var technologies = require('./technologies');
-var users = require('./users');
+var languages = require('./languages');
+var auth = require('./auth');
 
 // Works
 server.get(/^\/works\/([\w_-]+)(|\/)$/, works.getWork);
@@ -14,10 +15,69 @@ server.get(/^\/works(|\/)$/, works.getWorks);
 server.get(/^\/work-types(|\/)$/, technologies.getWorkTypes);
 server.get(/^\/technologies(|\/)$/, technologies.getTechnologies);
 
+// Languages
+var languagesValidation = {
+    name: {
+        isRequired: true
+    },
+    skill_level: {
+        isRequired: true,
+        isNumeric: true
+    },
+    experience: {
+        isRequired: true,
+        isDate: true
+    }
+};
+server.get(/^\/languages(|\/)$/, languages.getLanguages);
+server.post({
+    url: /^\/languages(|\/)$/,
+    validation: {
+        content: languagesValidation
+    }
+}, languages.addLanguage);
+server.put({
+    url: /^\/languages\/(\d+?)(|\/)$/,
+    validation: {
+        content: languagesValidation
+    }
+}, languages.updateLanguage);
+server.del({
+    url: /^\/languages\/(\d+?)(|\/)$/
+}, languages.deleteLanguage);
+
 // Users
-server.post(/^\/auth\/signup(|\/)$/, users.signUp);
-server.post(/^\/auth\/signin(|\/)$/, users.signIn);
-server.post(/^\/auth\/logout(|\/)$/, users.logOut);
+var userValidation = {
+    username: {
+        isRequired: true
+    },
+    password: {
+        isRequired: true
+    }
+};
+server.post({
+    url: /^\/auth\/signup(|\/)$/,
+    validation: {
+        content: userValidation
+    }
+}, auth.signUp);
+server.post({
+    url: /^\/auth\/signin(|\/)$/,
+    validation: {
+        content: userValidation
+    }
+}, auth.signIn);
+server.post({
+    url: /^\/auth\/logout(|\/)$/,
+    validation: {
+        content: {
+            token: {
+                isRequired: true
+            }
+        }
+    }
+
+}, auth.logOut);
 
 /**
  * Not allowed function.
