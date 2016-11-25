@@ -21,6 +21,12 @@ CREATE TABLE work_types (
     slug CHAR(32) NOT NULL DEFAULT ""
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+INSERT INTO work_types (`name`, `slug`) VALUES
+('Front-end','front-end'),
+('Back-end','back-end'),
+('Testing','testing'),
+('UI/UX','ui-ux');
+
 DROP TABLE IF EXISTS languages;
 CREATE TABLE languages (
     id INT PRIMARY KEY AUTO_INCREMENT,

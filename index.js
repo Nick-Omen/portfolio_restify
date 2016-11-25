@@ -62,7 +62,7 @@ server.post({
     }
 }, auth.signUp);
 server.post({
-    url: /^\/auth\/signin(|\/)$/,
+    url: /^\/auth\/login(|\/)$/,
     validation: {
         content: userValidation
     }
