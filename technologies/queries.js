@@ -4,46 +4,98 @@ var Promise = require('bluebird');
 var connection = require('../db');
 var utils = require('../utils');
 
-var getWorkTypes = function () {
+var getTechnologies = function () {
+
+    var sql = "SELECT * FROM `technologies`";
 
     return new Promise(function (resolve, reject) {
 
-        var sql = "SELECT `wt`.`type`, `wt`.`slug`, GROUP_CONCAT(DISTINCT `t`.`tech`) AS `tech` "
-            + "FROM `technologies` AS `t` "
-            + "LEFT JOIN `work_types` AS `wt` ON FIND_IN_SET(`wt`.`id`, `t`.`work_type`) "
-            + "GROUP BY `wt`.`type`";
+        connection.query(sql, function (err, rows) {
 
-        connection
-            .query(sql, function (err, rows) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
+            if (err) {
+                reject(err);
+            }
+
+            resolve(rows);
+        })
+    })
+};
+
+var addTechnology = function (technology) {
+
+    var techSlug = utils.getSlug(technology.name);
+    var sql = "INSERT INTO `technologies` (`name`, `slug`, `work_type`) VALUES "
+        + "('" + technology.name + "','" + techSlug + "','"
+        + technology.work_type + "')";
+
+    return new Promise(function (resolve, reject) {
+
+        connection.query(sql, function (err, rows) {
+
+            if(err) {
+                reject('Mysql error');
+            }
+
+            resolve({
+                id: rows.insertId,
+                name: technology.name,
+                slug: techSlug,
+                work_type: technology.work_type
+            })
+        });
+    })
+};
+
+var updateTechnology = function (id, technology) {
+
+    var sql = "UPDATE `technologies` SET "
+        + "`name` = '" + technology.name + "',"
+        + "`slug` = '" + utils.getSlug(technology.name) + "', "
+        + "`work_type` = '" + technology.work_type + "'"
+        + "WHERE `id` = " + id;
+
+    return new Promise(function (resolve, reject) {
+        connection.query(sql, function (err, rows) {
+
+            if(err) {
+                reject('Mysql error')
+            }
+
+            connection.query("SELECT * FROM `technologies` WHERE `id` = " + id + " LIMIT 1", function (err, rows) {
+
+                if(err){
+                    reject('Mysql error');
                 }
 
-                resolve(utils.splitFields(rows, ['tech']));
-            });
+                resolve(rows[0]);
+            })
+        })
     });
 };
 
-var getTechnologies = function () {
+var deleteTechnology = function (id) {
+
+    var sql = "DELETE FROM `technologies` WHERE `id` = " + id;
 
     return new Promise(function (resolve, reject) {
 
-        var sql = "SELECT `tech` AS `name`, `slug` FROM `technologies`";
+        connection.query(sql, function (err, rows) {
 
-        connection
-            .query(sql, function (err, rows) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                }
+            if(err){
+                reject('Mysql error');
+            }
 
-                resolve(utils.splitFields(rows, ['tech']));
-            });
-    });
+            resolve({
+                id: id
+            })
+        })
+    })
+
 };
 
 module.exports = {
-    getWorkTypes: getWorkTypes,
-    getTechnologies: getTechnologies
+    getTechnologies: getTechnologies,
+    addTechnology: addTechnology,
+    updateTechnology: updateTechnology,
+    deleteTechnology: deleteTechnology
 };

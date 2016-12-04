@@ -5,15 +5,41 @@ var server = require('./server');
 var works = require('./works');
 var technologies = require('./technologies');
 var languages = require('./languages');
+var workTypes = require('./work-type');
 var auth = require('./auth');
 
 // Works
 server.get(/^\/works\/([\w_-]+)(|\/)$/, works.getWork);
 server.get(/^\/works(|\/)$/, works.getWorks);
 
+// Work types
+server.get(/^\/work-types(|\/)$/, workTypes.getWorkTypes);
+
 // Technologies
-server.get(/^\/work-types(|\/)$/, technologies.getWorkTypes);
+var technologiesValidation = {
+    name: {
+        isRequired: true
+    },
+    work_type: {
+        isRequired: true
+    }
+};
 server.get(/^\/technologies(|\/)$/, technologies.getTechnologies);
+server.post({
+    url: /^\/technologies(|\/)$/,
+    validation: {
+        content: technologiesValidation
+    }
+}, technologies.addTechnology);
+server.put({
+    url: /^\/technologies\/(\d+?)(|\/)$/,
+    validation: {
+        content: technologiesValidation
+    }
+}, technologies.updateTechnology);
+server.del({
+    url: /^\/technologies\/(\d+?)(|\/)$/
+}, technologies.deleteTechnology);
 
 // Languages
 var languagesValidation = {

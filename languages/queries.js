@@ -23,9 +23,11 @@ var getLanguages = function () {
 
 var addLanguage = function (language) {
 
+    var lang_slug = utils.getSlug(language.name);
+    var lang_experience = new Date(language.experience).toISOString().split('T')[0];
     var sql = "INSERT INTO `languages` (`name`, `slug`, `skill_level`, `experience`) VALUES "
-        + "('" + language.name + "','" + utils.getSlug(language.name) + "',"
-        + language.skill_level + ",'" + new Date(language.experience).toISOString().split('T')[0] + "')";
+        + "('" + language.name + "','" + lang_slug + "',"
+        + language.skill_level + ",'" + lang_experience + "')";
 
     return new Promise(function (resolve, reject) {
 
@@ -36,7 +38,11 @@ var addLanguage = function (language) {
             }
 
             resolve({
-                id: rows.insertId
+                id: rows.insertId,
+                name: language.name,
+                slug: lang_slug,
+                skill_level: language.skill_level,
+                experience: lang_experience
             })
         });
     })
@@ -46,6 +52,7 @@ var updateLanguage = function (id, language) {
 
     var sql = "UPDATE `languages` SET "
         + "`name` = '" + language.name + "',"
+        + "`slug` = '" + utils.getSlug(language.name) + "',"
         + "`skill_level` = '" + language.skill_level + "',"
         + "`experience` = '" + new Date(language.experience).toISOString().split('T')[0] + "'"
         + "WHERE `id` = " + id;
