@@ -9,8 +9,46 @@ var workTypes = require('./work-type');
 var auth = require('./auth');
 
 // Works
+var worksValidation = {
+    title: {
+        isRequired: true
+    },
+    description: {
+        isRequired: true
+    },
+    short_description: {
+        isRequired: true
+    },
+    url: {
+        isRequired: true
+    },
+    languages: {
+        isRequired: true
+    },
+    technologies: {
+        isRequired: true
+    },
+    work_types: {
+        isRequired: true
+    }
+};
 server.get(/^\/works\/([\w_-]+)(|\/)$/, works.getWork);
 server.get(/^\/works(|\/)$/, works.getWorks);
+server.post({
+    url: /^\/works(|\/)$/,
+    validation: {
+        content: worksValidation
+    }
+}, works.addWork);
+server.put({
+    url: /^\/works\/([\w_-]+)(|\/)$/,
+    validation: {
+        content: worksValidation
+    }
+}, works.updateWork);
+server.del({
+    url: /^\/works\/([\w_-]+)(|\/)$/
+}, works.deleteWork);
 
 // Work types
 server.get(/^\/work-types(|\/)$/, workTypes.getWorkTypes);

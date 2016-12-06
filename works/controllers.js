@@ -29,6 +29,51 @@ var getWorks = function (req, res, next) {
         });
 };
 
+var addWork = function (req, res, next) {
+
+    queries.addWork(req.body)
+        .then(function (data) {
+            res.send(200, data[0]);
+            next();
+        })
+        .error(function () {
+            res.send(400, {
+                message: "Unknown error"
+            });
+            next();
+        });
+};
+
+var updateWork = function (req, res, next) {
+
+    queries.updateWork(req.params[0], req.body)
+        .then(function (data) {
+            res.send(200, data[0]);
+            next();
+        })
+        .error(function () {
+            res.send(400, {
+                message: "Unknown error"
+            });
+            next();
+        });
+};
+
+var deleteWork = function (req, res, next) {
+
+    queries.deleteWork(req.params[0])
+        .then(function (data) {
+            res.send(200, data);
+            next();
+        })
+        .error(function () {
+            res.send(400, {
+                message: "Unknown error"
+            });
+            next();
+        });
+};
+
 /**
  * @api {get} /works/:identifier Request work by id or slug.
  * @apiName Get Works
@@ -67,5 +112,8 @@ var getWork = function (req, res, next) {
 
 module.exports = {
     getWorks: getWorks,
+    addWork: addWork,
+    updateWork: updateWork,
+    deleteWork: deleteWork,
     getWork: getWork
 };

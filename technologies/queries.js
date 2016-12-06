@@ -90,7 +90,6 @@ var deleteTechnology = function (id) {
             })
         })
     })
-
 };
 
 module.exports = {
