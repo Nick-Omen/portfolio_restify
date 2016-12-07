@@ -3,20 +3,19 @@
 var queries = require('./queries');
 
 /**
- * @api {get} /works/ Request works list.
- * @apiName Get Works
- * @apiGroup Work
+ * @api {GET} /work-types/ Get work type
+ * @apiName Get Work Types
+ * @apiGroup Work Type
  *
- * @apiSuccess {json} all works objects.
+ * @apiSuccess {Array} WorkType[]
  *
- * @apiError {json} Unknown error
+ * @apiError {String} message Error message.
  *
  * @apiVersion 1.0.0
  */
 var getWorkTypes = function (req, res, next) {
 
-    queries
-        .getWorkTypes()
+    queries.getWorkTypes()
         .then(function (data) {
             res.send(200, data);
             next();

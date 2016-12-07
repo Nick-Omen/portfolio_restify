@@ -7,11 +7,11 @@ var queries = require('./queries');
  * @apiName Sign Up
  * @apiGroup Auth
  *
- * @apiSuccess {}
+ * @apiSuccess {Object} userData
  *
- * @apiError {}
+ * @apiError {Object} errorObject
  *
- * @apiVersion
+ * @apiVersion 1.0.0
  */
 var signUp = function (req, res, next) {
 
@@ -40,15 +40,15 @@ var signUp = function (req, res, next) {
 };
 
 /**
- * @api {POST} /auth/signin/
+ * @api {POST} /auth/login/
  * @apiName Sign In
  * @apiGroup Auth
  *
- * @apiSuccess {}
+ * @apiSuccess {Object} user
  *
- * @apiError {}
+ * @apiError {Object} errorData
  *
- * @apiVersion
+ * @apiVersion 1.0.0
  */
 var signIn = function (req, res, next) {
 

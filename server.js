@@ -59,4 +59,12 @@ server.get(/\/images\/?.*/, restify.serveStatic({
     directory: __dirname
 }));
 
+server.get(/\/docs(|\/)$/, function (req, res, next) {
+    res.redirect('/docs/index.html', next);
+});
+
+server.get(/\/docs\/?.*/, restify.serveStatic({
+    directory: __dirname
+}));
+
 module.exports = server;

@@ -12,7 +12,7 @@ var getWorks = function () {
 
         connection.query(sql, function (err, rows) {
             if (err) {
-                reject(err)
+                reject('Mysql error.')
             }
 
             resolve(utils.appendServerUrlToImages(rows, ['thumbnail', 'logo']));
@@ -127,7 +127,7 @@ var getWork = function (identifier) {
 
         connection.query(sql, function (err, rows) {
             if (err) {
-                reject(err)
+                reject('Mysql error.')
             }
 
             rows = utils.splitFields(rows, ['work_types', 'languages', 'technologies']);

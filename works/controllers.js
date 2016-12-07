@@ -3,20 +3,19 @@
 var queries = require('./queries');
 
 /**
- * @api {get} /works/ Request works list.
+ * @api {GET} /works/ Get works
  * @apiName Get Works
  * @apiGroup Work
  *
- * @apiSuccess {json} all works objects.
+ * @apiSuccess {Array} Work[]
  *
- * @apiError {json} Unknown error
+ * @apiError {String} message Error message.
  *
  * @apiVersion 1.0.0
  */
 var getWorks = function (req, res, next) {
 
-    queries
-        .getWorks()
+    queries.getWorks()
         .then(function (data) {
             res.send(200, data);
             next();
@@ -29,6 +28,17 @@ var getWorks = function (req, res, next) {
         });
 };
 
+/**
+ * @api {POST} /works/ Add work
+ * @apiName Add Work
+ * @apiGroup Work
+ *
+ * @apiSuccess {Object} Work
+ *
+ * @apiError {String} message Error message.
+ *
+ * @apiVersion 1.0.0
+ */
 var addWork = function (req, res, next) {
 
     queries.addWork(req.body)
@@ -44,6 +54,19 @@ var addWork = function (req, res, next) {
         });
 };
 
+/**
+ * @api {PUT} /works/:identifier Modify work
+ * @apiName Update Work
+ * @apiGroup Work
+ *
+ * @apiParam {Mixed} identifier Work ID or slug
+ *
+ * @apiSuccess {Object} Work
+ *
+ * @apiError {String} message Error message.
+ *
+ * @apiVersion 1.0.0
+ */
 var updateWork = function (req, res, next) {
 
     queries.updateWork(req.params[0], req.body)
@@ -59,6 +82,19 @@ var updateWork = function (req, res, next) {
         });
 };
 
+/**
+ * @api {DELETE} /works/:identifier Delete work
+ * @apiName Update Work
+ * @apiGroup Work
+ *
+ * @apiParam {Mixed} identifier Work ID or slug
+ *
+ * @apiSuccess {Object} Work ID
+ *
+ * @apiError {String} message Error message.
+ *
+ * @apiVersion 1.0.0
+ */
 var deleteWork = function (req, res, next) {
 
     queries.deleteWork(req.params[0])
@@ -75,13 +111,13 @@ var deleteWork = function (req, res, next) {
 };
 
 /**
- * @api {get} /works/:identifier Request work by id or slug.
- * @apiName Get Works
+ * @api {GET} /works/:identifier Get work details
+ * @apiName Get Work
  * @apiGroup Work
  *
- * @apiSuccess {json} all works objects.
+ * @apiSuccess {Object} work Work
  *
- * @apiError {json} Unknown error
+ * @apiError {String} message Error message.
  *
  * @apiVersion 1.0.0
  */

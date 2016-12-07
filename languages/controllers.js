@@ -2,6 +2,17 @@
 
 var queries = require('./queries');
 
+/**
+ * @api {GET} /languages/ Get languages
+ * @apiName Get Languages
+ * @apiGroup Language
+ *
+ * @apiSuccess {Array} Language[]
+ *
+ * @apiError {String} message Error message.
+ *
+ * @apiVersion 1.0.0
+ */
 var getLanguages = function (req, res, next) {
 
     queries.getLanguages()
@@ -17,6 +28,17 @@ var getLanguages = function (req, res, next) {
         })
 };
 
+/**
+ * @api {POST} /languages/ Add language
+ * @apiName Add Language
+ * @apiGroup Language
+ *
+ * @apiSuccess {Object} Language
+ *
+ * @apiError {String} message Error message.
+ *
+ * @apiVersion 1.0.0
+ */
 var addLanguage = function (req, res, next) {
 
     queries.addLanguage(req.body)
@@ -32,6 +54,19 @@ var addLanguage = function (req, res, next) {
         })
 };
 
+/**
+ * @api {PUT} /languages/:id Update language
+ * @apiName Update Language
+ * @apiGroup Language
+ *
+ * @apiParam {Number} id Language ID.
+ *
+ * @apiSuccess {Object} Language
+ *
+ * @apiError {String} message Error message.
+ *
+ * @apiVersion 1.0.0
+ */
 var updateLanguage = function (req, res, next) {
 
     queries.updateLanguage(req.params[0], req.body)
@@ -47,6 +82,19 @@ var updateLanguage = function (req, res, next) {
         })
 };
 
+/**
+ * @api {DELETE} /languages/:id Delete language
+ * @apiName Delete Language
+ * @apiGroup Language
+ *
+ * @apiParam {Number} id Language ID.
+ *
+ * @apiSuccess {Object} ID
+ *
+ * @apiError {String} message Error message.
+ *
+ * @apiVersion 1.0.0
+ */
 var deleteLanguage = function (req, res, next) {
 
     queries.deleteLanguage(req.params[0])

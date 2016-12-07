@@ -11,7 +11,7 @@ var getWorkTypes = function () {
 
         connection.query(sql, function (err, rows) {
             if (err) {
-                reject(err)
+                reject('Mysql error')
             }
 
             resolve(rows);

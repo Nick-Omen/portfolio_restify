@@ -2,6 +2,17 @@
 
 var queries = require('./queries');
 
+/**
+ * @api {GET} /technologies/ Get technologies
+ * @apiName Get Technologies
+ * @apiGroup Technology
+ *
+ * @apiSuccess {Array} Technology[]
+ *
+ * @apiError {String} message Error message.
+ *
+ * @apiVersion 1.0.0
+ */
 var getTechnologies = function (req, res, next) {
 
     queries.getTechnologies()
@@ -17,6 +28,17 @@ var getTechnologies = function (req, res, next) {
         })
 };
 
+/**
+ * @api {POST} /technologies/ Add technology
+ * @apiName Add Technology
+ * @apiGroup Technology
+ *
+ * @apiSuccess {Array} Technology
+ *
+ * @apiError {String} message Error message.
+ *
+ * @apiVersion 1.0.0
+ */
 var addTechnology = function (req, res, next) {
 
     queries.addTechnology(req.body)
@@ -32,6 +54,19 @@ var addTechnology = function (req, res, next) {
         })
 };
 
+/**
+ * @api {PUT} /technologies/:id Update technology
+ * @apiName Update Technology
+ * @apiGroup Technology
+ *
+ * @apiParam {Number} id Language ID.
+ *
+ * @apiSuccess {Array} Technology
+ *
+ * @apiError {String} message Error message.
+ *
+ * @apiVersion 1.0.0
+ */
 var updateTechnology = function (req, res, next) {
 
     queries.updateTechnology(req.params[0], req.body)
@@ -47,6 +82,19 @@ var updateTechnology = function (req, res, next) {
         })
 };
 
+/**
+ * @api {DELETE} /technologies/:id Delete technology
+ * @apiName Delete Technology
+ * @apiGroup Technology
+ *
+ * @apiParam {Number} id Technology ID.
+ *
+ * @apiSuccess {Object} ID
+ *
+ * @apiError {String} message Error message.
+ *
+ * @apiVersion 1.0.0
+ */
 var deleteTechnology = function (req, res, next) {
 
     queries.deleteTechnology(req.params[0])

@@ -1,6 +1,5 @@
 "use strict";
 
-var server = require('./server');
 var config = require('./config');
 var slug = require('slug');
 
