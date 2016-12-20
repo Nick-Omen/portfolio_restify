@@ -1,18 +1,25 @@
 "use strict";
 
-if(process.env && process.env.NODE_ENV === 'dev') {
+switch (process.env.NODE_ENV) {
 
-    module.exports = require('./omen.config');
-} else {
+    case 'dev':
+        module.exports = require('./dev.config');
+        break;
 
-    module.exports = {
-        db: {
-            host: '',
-            user: '',
-            password: '',
-            database: ''
-        },
-        mongoDbUrl: '',
-        serverUrl: ''
-    };
+    case 'test':
+        module.exports = require('./test.config');
+        break;
+
+    default:
+        module.exports = {
+            db: {
+                host: '',
+                user: '',
+                password: '',
+                database: ''
+            },
+            mongoDbUrl: '',
+            serverUrl: ''
+        };
+        break;
 }

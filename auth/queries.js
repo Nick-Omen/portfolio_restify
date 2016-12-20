@@ -3,6 +3,7 @@
 var Promise = require('bluebird');
 var connection = require('../db');
 var crypto = require('crypto');
+var moment = require('moment');
 var redis = require('../redis');
 
 var getHashedPassword = function (password, salt) {
@@ -25,7 +26,6 @@ var signUp = function (username, password) {
         connection.query(checkUserSql, function (err, rows) {
 
             if (err) {
-                console.log(err);
                 reject('Mysql error');
             }
 
@@ -40,7 +40,6 @@ var signUp = function (username, password) {
                 connection.query(sql, function (err, rows) {
 
                     if (err) {
-                        console.log(err);
                         reject('Mysql error');
                     }
 
@@ -72,13 +71,12 @@ var signIn = function (username, password) {
         connection.query(getSaltSql, function (err, rows) {
 
             if (err) {
-                reject(err);
+                reject('Mysql error.');
             }
 
             if (rows.length === 0) {
 
-                resolve({
-                    status: 'invalid',
+                reject({
                     message: 'User is not exists.'
                 })
             } else {
@@ -105,9 +103,10 @@ var signIn = function (username, password) {
                     } else {
 
                         var token = generateToken();
-                        redis.set(token, '{"status": 200, "date": "' + new Date() + '"}', function (err, res) {
+                        redis.set(token, '{"date": "' + moment(new Date()).add(1, 'd').toString() + '"}', function (err, res) {
 
                             if (res === 'OK') {
+
                                 resolve({
                                     username: username,
                                     email: rows[0]['email'],
@@ -129,24 +128,32 @@ var signIn = function (username, password) {
 
 var logOut = function (token) {
 
-    var sql = "";
-
     return new Promise(function (resolve, reject) {
 
-        connection.query(sql, function (err, rows) {
+        redis.getAsync(token).then(function (res) {
+            if (!res) {
+                reject({
+                    message: 'Session not found'
+                });
+            } else {
 
-            if (err) {
-                reject(err);
+                redis.del(token);
+                resolve({
+                    message: "You've successfully signed out."
+                })
             }
-
-            console.log(rows);
-            resolve(rows);
         });
     });
+};
+
+var truncateTable = function () {
+
+    connection.query("TRUNCATE TABLE `users`");
 };
 
 module.exports = {
     signUp: signUp,
     signIn: signIn,
-    logOut: logOut
+    logOut: logOut,
+    truncateTable: truncateTable
 };

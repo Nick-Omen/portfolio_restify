@@ -29,6 +29,7 @@ var signUp = function (req, res, next) {
             .catch(function (data) {
 
                 res.send(406, data);
+                next();
             });
     } else {
 
@@ -59,7 +60,14 @@ var signIn = function (req, res, next) {
 
         queries.signIn(username, password)
             .then(function (data) {
+
                 res.send(200, data);
+                next();
+            })
+            .catch(function (data) {
+
+                res.send(400, data);
+                next();
             })
     } else {
 
@@ -72,6 +80,16 @@ var signIn = function (req, res, next) {
 
 var logOut = function (req, res, next) {
 
+    queries.logOut(req.body.token)
+        .then(function (data) {
+            res.send(200, data);
+            next();
+        })
+        .catch(function (data) {
+
+            res.send(400, data);
+            next();
+        });
 };
 
 module.exports = {

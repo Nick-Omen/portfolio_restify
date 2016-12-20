@@ -2,6 +2,8 @@
 
 var restify = require('restify');
 var redis = require('./redis');
+var Promise = require('bluebird');
+var moment = require('moment');
 var restifyValidation = require('node-restify-validation');
 
 var server = restify.createServer({
@@ -10,29 +12,50 @@ var server = restify.createServer({
 
 var checkAuthorization = function (token) {
 
-    redis.get(token, function (err, reply) {
-        return !err && reply === 'ok';
-    });
+    return new Promise(function (resolve, reject) {
 
-    return false;
+        redis.getAsync(token).then(function (res) {
+            if (!res) {
+                reject({
+                    message: 'Session not found'
+                });
+            }
+            res = JSON.parse(res);
+
+            if (moment(new Date()) > moment(new Date(res.date))) {
+
+                reject({
+                    message: 'Session expired'
+                })
+            }
+
+            resolve(true);
+        });
+    });
 };
 
 var sessionMiddleware = function (req, res, next) {
 
-    return next();
-    if (req.headers.authorization && req.method !== 'GET' && req.url.indexOf('/auth/') === -1) {
-        var authSession = checkAuthorization(req.headers.authorization.split(' ')[1]);
-        if (authSession) {
+    if (req.method === 'GET' || req.url.indexOf('/auth/') !== -1) {
 
-            return next();
-        } else {
-            res.send(403, {
-                message: 'Method not allowed for unauthorized users'
-            });
-            return next();
-        }
+        return next();
     }
-    return next();
+
+    if(req.headers.authorization) {
+        var token = req.headers.authorization.split(' ')[1];
+
+        checkAuthorization(token)
+            .then(function () {
+                return next();
+            })
+            .catch(function (data) {
+                data.send(403, res);
+            })
+    }
+
+    res.send(403, {
+        message: "You haven't authorized."
+    });
 };
 
 if (process.env && process.env.NODE_ENV === 'dev') {

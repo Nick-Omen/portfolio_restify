@@ -4,7 +4,8 @@
   "description": "REST-api for my portfolio.",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=dev nodemon index.js"
+    "start": "NODE_ENV=dev nodemon index.js",
+    "tests": "NODE_ENV=test node tests.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +16,8 @@
     "redis": "^2.6.3",
     "restify": "^4.2.0",
     "slug": "^0.9.1"
+  },
+  "devDependencies": {
+    "hippie": "^0.5.1"
   }
 }

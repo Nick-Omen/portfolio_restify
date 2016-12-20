@@ -13,7 +13,7 @@ var getLanguages = function () {
         connection.query(sql, function (err, rows) {
 
             if (err) {
-                reject(err);
+                reject('Mysql error.');
             }
 
             resolve(rows);
@@ -34,7 +34,7 @@ var addLanguage = function (language) {
         connection.query(sql, function (err, rows) {
 
             if(err) {
-                reject('Mysql error');
+                reject('Mysql error.');
             }
 
             resolve({
@@ -61,7 +61,7 @@ var updateLanguage = function (id, language) {
         connection.query(sql, function (err, rows) {
 
             if(err) {
-                reject('Mysql error')
+                reject('Mysql error.')
             }
 
             connection.query("SELECT * FROM `languages` WHERE `id` = " + id + " LIMIT 1", function (err, rows) {
@@ -85,7 +85,7 @@ var deleteLanguage = function (id) {
         connection.query(sql, function (err, rows) {
 
             if(err){
-                reject('Mysql error');
+                reject('Mysql error.');
             }
 
             resolve({
@@ -96,9 +96,15 @@ var deleteLanguage = function (id) {
 
 };
 
+var truncateTable = function () {
+
+    connection.query("TRUNCATE TABLE `languages`");
+};
+
 module.exports = {
     getLanguages: getLanguages,
     addLanguage: addLanguage,
     updateLanguage: updateLanguage,
-    deleteLanguage: deleteLanguage
+    deleteLanguage: deleteLanguage,
+    truncateTable: truncateTable
 };
