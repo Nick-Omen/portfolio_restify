@@ -1,25 +1,42 @@
 "use strict";
 
 var authQueries = require('./auth/queries');
+var connection = require('./db');
+var fs = require('fs');
 
-require('./index').then(function () {
+fs.readFile('./dump.sql', {encoding: 'utf8', flag: 'r'}, function (err, data) {
 
-    require('./auth/tests')();
+    if(err){
+        console.trace(err);
+    }
 
-    authQueries.signUp('nick', 'testpass')
-        .then(function (data) {
-            authQueries.signIn(data.username, 'testpass')
-                .then(function (res) {
-                    var token = res.token;
-                    require('./languages/tests')(token);
+    connection.query(data, function (err, rows) {
+        if(err){
+            console.trace(err);
+        }
 
-                    process.exit(0);
+        require('./index').then(function () {
+
+            require('./auth/tests')();
+
+            authQueries.signUp('nick', 'testpass')
+                .then(function (data) {
+                    authQueries.signIn(data.username, 'testpass')
+                        .then(function (res) {
+                            var token = res.token;
+                            require('./languages/tests')(token);
+                            require('./technologies/tests')(token);
+                            require('./work-type/tests')();
+
+                            process.exit(0);
+                        })
+                        .catch(function (err) {
+                            if (err) throw err;
+                        });
                 })
-                .catch(function (err) {
-                    if (err) throw err;
-                });
-        })
-        .catch(function () {
-            throw new Error("Server wasn't start for some reason")
-        })
+                .catch(function () {
+                    throw new Error("Server wasn't start for some reason")
+                })
+        });
+    });
 });

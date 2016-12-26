@@ -92,9 +92,15 @@ var deleteTechnology = function (id) {
     })
 };
 
+var truncateTable = function () {
+
+    connection.query("TRUNCATE TABLE `technologies`");
+};
+
 module.exports = {
     getTechnologies: getTechnologies,
     addTechnology: addTechnology,
     updateTechnology: updateTechnology,
-    deleteTechnology: deleteTechnology
+    deleteTechnology: deleteTechnology,
+    truncateTable: truncateTable
 };

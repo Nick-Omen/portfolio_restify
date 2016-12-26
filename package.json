@@ -18,6 +18,7 @@
     "slug": "^0.9.1"
   },
   "devDependencies": {
-    "hippie": "^0.5.1"
+    "hippie": "^0.5.1",
+    "nodemon": "^1.11.0"
   }
 }

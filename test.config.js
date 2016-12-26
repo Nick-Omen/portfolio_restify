@@ -7,5 +7,5 @@ module.exports = {
         password: '666',
         database: 'portfolio_test'
     },
-    serverUrl: 'http://localhost:3000/'
+    serverUrl: 'http://localhost:3003/'
 };

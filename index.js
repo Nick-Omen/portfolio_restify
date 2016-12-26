@@ -36,7 +36,7 @@ if(process.env && process.env.NODE_ENV === 'test') {
 
     module.exports = new Promise(function (resolve, reject) {
 
-        server.listen(3000, function () {
+        server.listen(3003, function () {
             console.log('%s listening at %s', server.name, server.url);
             resolve(server);
         });
