@@ -136,10 +136,16 @@ var getWork = function (identifier) {
     });
 };
 
+var truncateTable = function () {
+
+    connection.query("TRUNCATE TABLE `works`");
+};
+
 module.exports = {
     getWorks: getWorks,
     addWork: addWork,
     updateWork: updateWork,
     deleteWork: deleteWork,
-    getWork: getWork
+    getWork: getWork,
+    truncateTable: truncateTable
 };

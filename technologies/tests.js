@@ -56,6 +56,7 @@ module.exports = function (token) {
         })
         .expectStatus(201)
         .expectBody({
+            id: 1,
             name: 'Test',
             work_type: '1,2,3,4'
         })

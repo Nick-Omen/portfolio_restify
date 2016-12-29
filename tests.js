@@ -27,6 +27,7 @@ fs.readFile('./dump.sql', {encoding: 'utf8', flag: 'r'}, function (err, data) {
                             require('./languages/tests')(token);
                             require('./technologies/tests')(token);
                             require('./work-type/tests')();
+                            require('./works/tests')(token);
 
                             process.exit(0);
                         })
