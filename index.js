@@ -27,10 +27,16 @@ var notAllowed = function (req, res, next) {
     next();
 };
 
+var optionsRoute = function(req, res, next) {
+    res.send(200);
+    next();
+};
+
 server.get(/.*/, notAllowed);
 server.post(/.*/, notAllowed);
 server.put(/.*/, notAllowed);
 server.head(/.*/, notAllowed);
+server.opts(/.*/, optionsRoute);
 
 if(process.env && process.env.NODE_ENV === 'test') {
 

@@ -41,7 +41,7 @@ var sessionMiddleware = function (req, res, next) {
         return next();
     }
 
-    if(req.headers.authorization) {
+    if (req.headers.authorization) {
         var token = req.headers.authorization.split(' ')[1];
 
         checkAuthorization(token)
@@ -49,7 +49,7 @@ var sessionMiddleware = function (req, res, next) {
                 return next();
             })
             .catch(function (data) {
-                data.send(403, res);
+                res.send(403, data);
             })
     }
 
@@ -58,11 +58,14 @@ var sessionMiddleware = function (req, res, next) {
     });
 };
 
-if (process.env && process.env.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV === 'dev') {
 
     var allowCors = function (req, res, next) {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "X-Requested-With");
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
+        res.setHeader('Access-Control-Allow-Methods', '*');
+        res.setHeader('Access-Control-Expose-Headers', 'X-Api-Version, X-Request-Id, X-Response-Time');
+        res.setHeader('Access-Control-Max-Age', '1000');
         return next();
     };
     server.use(allowCors);

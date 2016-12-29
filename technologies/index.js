@@ -28,4 +28,8 @@ module.exports = function (server) {
     server.del({
         url: /^\/technologies\/(\d+?)(|\/)$/
     }, controllers.deleteTechnology);
+    server.opts(/^\/technologies\/(\d+?)(|\/)$/, function (req, res, next) {
+        res.send(200);
+        next();
+    })
 };
