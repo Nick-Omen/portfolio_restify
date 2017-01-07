@@ -32,11 +32,11 @@ var optionsRoute = function(req, res, next) {
     next();
 };
 
+server.opts(/.*/, optionsRoute);
 server.get(/.*/, notAllowed);
 server.post(/.*/, notAllowed);
 server.put(/.*/, notAllowed);
 server.head(/.*/, notAllowed);
-server.opts(/.*/, optionsRoute);
 
 if(process.env && process.env.NODE_ENV === 'test') {
 

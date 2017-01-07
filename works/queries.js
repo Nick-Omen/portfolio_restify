@@ -26,7 +26,8 @@ var addWork = function (work) {
     var sql = "INSERT INTO `works` (`title`, `slug`, `description`, `short_description`, `url`, `languages`, `technologies`, `work_types`";
     sql += ") VALUES (";
     sql += "'" + work.title + "','" + slug + "','" + work.description + "','" + work.short_description + "',"
-        + "'" + work.url + "','" + work.languages + "','" + work.technologies + "','" + work.work_types + "'";
+        + "'" + work.url + "','" + utils.idArrayToString(work.languages) + "','"
+        + utils.idArrayToString(work.technologies) + "','" + utils.idArrayToString(work.work_types) + "'";
     sql += ")";
 
     return new Promise(function (resolve, reject) {

@@ -38,11 +38,18 @@ var splitFields = function (objs, keys) {
 };
 
 var getSlug = function (string) {
+    
     return slug(string, {lowercase: true});
+};
+
+var idArrayToString = function (idArray) {
+
+    return idArray.join(',');
 };
 
 module.exports = {
     appendServerUrlToImages: appendServerUrlToImages,
     splitFields: splitFields,
-    getSlug: getSlug
+    getSlug: getSlug,
+    idArrayToString: idArrayToString
 };

@@ -26,7 +26,7 @@ var addTechnology = function (technology) {
     var techSlug = utils.getSlug(technology.name);
     var sql = "INSERT INTO `technologies` (`name`, `slug`, `work_type`) VALUES "
         + "('" + technology.name + "','" + techSlug + "','"
-        + technology.work_type + "')";
+        + utils.idArrayToString(technology.work_type) + "')";
 
     return new Promise(function (resolve, reject) {
 
@@ -51,7 +51,7 @@ var updateTechnology = function (id, technology) {
     var sql = "UPDATE `technologies` SET "
         + "`name` = '" + technology.name + "',"
         + "`slug` = '" + utils.getSlug(technology.name) + "', "
-        + "`work_type` = '" + technology.work_type + "'"
+        + "`work_type` = '" + utils.idArrayToString(technology.work_type) + "'"
         + "WHERE `id` = " + id;
 
     return new Promise(function (resolve, reject) {

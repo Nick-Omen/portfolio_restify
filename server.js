@@ -60,26 +60,30 @@ var sessionMiddleware = function (req, res, next) {
 
 if (process.env.NODE_ENV === 'dev') {
 
-    var allowCors = function (req, res, next) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
-        res.setHeader('Access-Control-Allow-Methods', '*');
-        res.setHeader('Access-Control-Expose-Headers', 'X-Api-Version, X-Request-Id, X-Response-Time');
-        res.setHeader('Access-Control-Max-Age', '1000');
-        return next();
-    };
-    server.use(allowCors);
+    server
+        .use(function (req, res, next) {
+
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, Authorization');
+            res.setHeader('Access-Control-Allow-Methods', '*');
+
+            return next();
+        })
+        .use(function (req, res, next) {
+            console.log("[%s] %s", req.method, req.getPath());
+            return next();
+        });
 }
 
 server
-    .use(sessionMiddleware)
     .use(restify.fullResponse())
     .use(restify.bodyParser())
     .use(restify.queryParser())
     .use(restifyValidation.validationPlugin({
         errorsAsArray: false,
         forbidUndefinedVariables: false
-    }));
+    }))
+    .use(sessionMiddleware);
 
 server.get(/\/images\/?.*/, restify.serveStatic({
     directory: __dirname
