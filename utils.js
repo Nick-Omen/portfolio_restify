@@ -2,6 +2,9 @@
 
 var config = require('./config');
 var slug = require('slug');
+var fs = require('fs');
+var moment = require('moment');
+var path = require('path');
 
 var appendServerUrlToImages = function (objs, keys) {
 
@@ -38,18 +41,54 @@ var splitFields = function (objs, keys) {
 };
 
 var getSlug = function (string) {
-    
+
     return slug(string, {lowercase: true});
 };
 
 var idArrayToString = function (idArray) {
 
+    if (typeof(parseInt(idArray, 10)) === 'number') {
+        return idArray;
+    }
+
     return idArray.join(',');
+};
+
+var isImage = function (type) {
+
+    return /^image\/(png|jpe?g|gif)$/.test(type);
+};
+
+var getImageType = function (type) {
+
+    return type.replace('image/', '');
+};
+
+var uploadImage = function (file, name) {
+
+    if (!name) {
+        name = '';
+    }
+
+    if (isImage(file.type) && fs.existsSync(file.path)) {
+
+        var newFilename = moment().format('HHMMSS-DDMM')
+            + (name ? '_' + name : '_image')
+            + '.' + getImageType(file.type);
+
+        console.log(file.path);
+        fs.renameSync(file.path, path.resolve(__dirname, 'images', newFilename));
+
+        return 'images/' + newFilename;
+    }
+
+    return '';
 };
 
 module.exports = {
     appendServerUrlToImages: appendServerUrlToImages,
     splitFields: splitFields,
     getSlug: getSlug,
+    uploadImage: uploadImage,
     idArrayToString: idArrayToString
 };

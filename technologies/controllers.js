@@ -41,7 +41,7 @@ var getTechnologies = function (req, res, next) {
  */
 var addTechnology = function (req, res, next) {
 
-    queries.addTechnology(req.body)
+    queries.addTechnology(req.body, req.files)
         .then(function (data) {
 
             res.send(201, data);

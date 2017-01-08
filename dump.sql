@@ -42,6 +42,7 @@ CREATE TABLE technologies (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name CHAR(120) NOT NULL DEFAULT "",
     slug CHAR(120) NOT NULL DEFAULT "",
+    image CHAR(120) NOT NULL DEFAULT "",
     work_type CHAR(32) NOT NULL DEFAULT ""
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 ALTER TABLE technologies ADD UNIQUE `tech_index` (`name`, `slug`);

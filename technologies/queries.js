@@ -3,6 +3,7 @@
 var Promise = require('bluebird');
 var connection = require('../db');
 var utils = require('../utils');
+var fs = require('fs');
 
 var getTechnologies = function () {
 
@@ -21,26 +22,39 @@ var getTechnologies = function () {
     })
 };
 
-var addTechnology = function (technology) {
+var addTechnology = function (technology, files) {
 
+    var imageUrl = '';
     var techSlug = utils.getSlug(technology.name);
-    var sql = "INSERT INTO `technologies` (`name`, `slug`, `work_type`) VALUES "
-        + "('" + technology.name + "','" + techSlug + "','"
-        + utils.idArrayToString(technology.work_type) + "')";
+    var sql = "INSERT INTO `technologies` (`name`, `slug`, `work_type`";
+    if(files.image){
+        sql += ", `image`";
+    }
+    sql += ") VALUES ("
+        + "'" + technology.name + "','" + techSlug + "','"
+        + utils.idArrayToString(technology.work_type) + "'";
+    if (files.image) {
+
+        imageUrl = utils.uploadImage(files.image, 'technology');
+        sql += ",'" + imageUrl + "'";
+    }
+
+    sql += ")";
 
     return new Promise(function (resolve, reject) {
 
         connection.query(sql, function (err, rows) {
 
             if(err) {
-                reject('Mysql error');
+                reject('Mysql error.');
             }
 
             resolve({
                 id: rows.insertId,
                 name: technology.name,
                 slug: techSlug,
-                work_type: technology.work_type
+                work_type: technology.work_type,
+                image: imageUrl
             })
         });
     })

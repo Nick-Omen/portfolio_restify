@@ -5,10 +5,23 @@ var redis = require('./redis');
 var Promise = require('bluebird');
 var moment = require('moment');
 var restifyValidation = require('node-restify-validation');
+var path = require('path');
+var fs = require('fs');
 
 var server = restify.createServer({
     name: "Portfolio"
 });
+
+var bodyParserConfig = {
+    maxBodySize: 0,
+    mapParams: true,
+    mapFiles: false,
+    overrideParams: false,
+    keepExtensions: true,
+    uploadDir: path.resolve(__dirname, 'tmp'),
+    multiples: true,
+    hash: 'sha1'
+};
 
 var checkAuthorization = function (token) {
 
@@ -35,6 +48,8 @@ var checkAuthorization = function (token) {
 };
 
 var sessionMiddleware = function (req, res, next) {
+
+    return next();
 
     if (req.method === 'GET' || req.url.indexOf('/auth/') !== -1) {
 
@@ -76,9 +91,9 @@ if (process.env.NODE_ENV === 'dev') {
 }
 
 server
-    .use(restify.fullResponse())
-    .use(restify.bodyParser())
     .use(restify.queryParser())
+    .use(restify.bodyParser(bodyParserConfig))
+    .use(restify.fullResponse())
     .use(restifyValidation.validationPlugin({
         errorsAsArray: false,
         forbidUndefinedVariables: false
@@ -94,6 +109,10 @@ server.get(/\/docs(|\/)$/, function (req, res, next) {
 });
 
 server.get(/\/docs\/?.*/, restify.serveStatic({
+    directory: __dirname
+}));
+
+server.get(/\/images\/?.*/, restify.serveStatic({
     directory: __dirname
 }));
 
