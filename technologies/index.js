@@ -2,12 +2,13 @@
 
 var controllers = require('./controllers');
 var validation = {
-    // name: {
-    //     isRequired: true
-    // },
-    // work_type: {
-    //     isRequired: true
-    // }
+    name: {
+        isRequired: true
+    },
+    work_type_id: {
+        isRequired: true,
+        isNumeric: true
+    }
 };
 
 module.exports = function (server) {

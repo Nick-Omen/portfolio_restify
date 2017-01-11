@@ -21,11 +21,11 @@ CREATE TABLE work_types (
     slug CHAR(32) NOT NULL DEFAULT ""
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO work_types (`name`, `slug`) VALUES
-('Front-end','front-end'),
-('Back-end','back-end'),
-('Testing','testing'),
-('UI/UX','ui-ux');
+INSERT INTO work_types (`id`, `name`, `slug`) VALUES
+(1,'Front-end','front-end'),
+(2,'Back-end','back-end'),
+(3,'Testing','testing'),
+(4,'UI/UX','ui-ux');
 
 DROP TABLE IF EXISTS languages;
 CREATE TABLE languages (
@@ -43,9 +43,16 @@ CREATE TABLE technologies (
     name CHAR(120) NOT NULL DEFAULT "",
     slug CHAR(120) NOT NULL DEFAULT "",
     image CHAR(120) NOT NULL DEFAULT "",
-    work_type CHAR(32) NOT NULL DEFAULT ""
+    work_type_id INT(8) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 ALTER TABLE technologies ADD UNIQUE `tech_index` (`name`, `slug`);
+
+INSERT INTO technologies (`name`, `slug`, `work_type_id`) VALUES
+('Django','django',2),
+('jQuery','jquery',1),
+('Angular2','angular2',1),
+('Restify','restify',2),
+('Django REST Framework','django-rest-framework',2);
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (

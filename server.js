@@ -80,7 +80,7 @@ if (process.env.NODE_ENV === 'dev') {
 
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, Authorization');
-            res.setHeader('Access-Control-Allow-Methods', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
 
             return next();
         })

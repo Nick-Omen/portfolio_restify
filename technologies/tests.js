@@ -34,7 +34,7 @@ module.exports = function (token) {
         .method('POST')
         .send({
             name: 'Test',
-            work_type: '1,2,3,4'
+            work_type_id: 1
         })
         .expectStatus(403)
         .expectValue('message', /[\w'.,]+/g)
@@ -52,13 +52,13 @@ module.exports = function (token) {
         .method('POST')
         .send({
             name: 'Test',
-            work_type: '1,2,3,4'
+            work_type_id: 1
         })
         .expectStatus(201)
         .expectBody({
             id: 1,
             name: 'Test',
-            work_type: '1,2,3,4'
+            work_type_id: 1
         })
         .end()
         .then(successHandler('[POST] /technologies/ post technology with authorization'))
@@ -72,7 +72,7 @@ module.exports = function (token) {
         .url(technologiesUrl)
         .method('POST')
         .send({
-            work_type: '1,2,3,4'
+            work_type_id: 1
         })
         .expectStatus(403)
         .end()
@@ -89,13 +89,13 @@ module.exports = function (token) {
         .send({
             id: 1,
             name: 'Rename test',
-            work_type: '1,2'
+            work_type_id: 2
         })
         .expectStatus(200)
         .expectBody({
             id: 1,
             name: 'Rename test',
-            work_type: '1,2'
+            work_type_id: 2
         })
         .end()
         .then(successHandler('[PUT] /technologies/ update technology'))
