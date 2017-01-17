@@ -5,24 +5,10 @@ var connection = require('../db');
 var utils = require('../utils');
 var fs = require('fs');
 
-var adaptTechnology = function (technology) {
-    if(technology.wt_name && technology.wt_slug) {
-        technology.work_type = {
-            name: technology.wt_name,
-            slug: technology.wt_slug
-        };
-        delete technology.wt_name;
-        delete technology.wt_slug;
-
-        return technology
-    }
-    return technology;
-};
-
 var getTechnologies = function () {
 
-    var sql = "SELECT `T`.`id`, `T`.`name`, `T`.`slug`, `T`.`image`, "
-        + "`WT`.`name` AS `wt_name`, `WT`.`slug` AS `wt_slug` FROM `technologies` AS `T`"
+    var sql = "SELECT `T`.`id`, `T`.`name`, `T`.`slug`, `T`.`image`, `T`.`work_type_id`, "
+        + "`WT`.`name` AS `work_type_name`, `WT`.`slug` AS `work_type_slug` FROM `technologies` AS `T`"
         + "JOIN `work_types` AS `WT` ON `WT`.`id` = `T`.`work_type_id` "
         + "GROUP BY `T`.`id`";
 
@@ -34,7 +20,7 @@ var getTechnologies = function () {
                 reject(err);
             }
 
-            resolve(rows.map(adaptTechnology));
+            resolve(rows);
         })
     })
 };
@@ -43,19 +29,16 @@ var addTechnology = function (technology, files) {
 
     var imageUrl = '';
     var techSlug = utils.getSlug(technology.name);
-    var sql = "INSERT INTO `technologies` (`name`, `slug`, `work_type_id`";
-    if(files && files.image){
-        sql += ", `image`";
-    }
+    var sql = "INSERT INTO `technologies` (`name`, `slug`, `work_type_id`, `image`";
     sql += ") VALUES ("
         + "'" + technology.name + "','" + techSlug + "',"
         + technology.work_type_id;
+    console.log(files);
     if (files && files.image) {
 
         imageUrl = utils.uploadImage(files.image, 'technology');
-        sql += ",'" + imageUrl + "'";
     }
-
+    sql += ",'" + imageUrl + "'";
     sql += ")";
 
     return new Promise(function (resolve, reject) {

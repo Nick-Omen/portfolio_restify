@@ -48,7 +48,6 @@ var checkAuthorization = function (token) {
 };
 
 var sessionMiddleware = function (req, res, next) {
-
     return next();
 
     if (req.method === 'GET' || req.url.indexOf('/auth/') !== -1) {
