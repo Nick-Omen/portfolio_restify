@@ -62,11 +62,11 @@ var addTechnology = function (technology, files) {
 
 var updateTechnology = function (id, technology) {
 
-    var sql = "UPDATE `technologies` SET "
-        + "`name` = '" + technology.name + "',"
+    var sql = "UPDATE `technologies` SET ";
+    sql += "`name` = '" + technology.name + "',"
         + "`slug` = '" + utils.getSlug(technology.name) + "', "
-        + "`work_type_id` = " + technology.work_type_id
-        + " WHERE `id` = " + id;
+        + "`work_type_id` = " + technology.work_type_id;
+    sql += " WHERE `id` = " + id;
 
     return new Promise(function (resolve, reject) {
         connection.query(sql, function (err, rows) {
