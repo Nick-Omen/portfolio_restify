@@ -2,9 +2,13 @@
 
 module.exports = function (idArray) {
 
-    if (typeof(parseInt(idArray, 10)) === 'number') {
-        return idArray;
+    if(Array.isArray(idArray)) {
+        return idArray.join(',');
     }
 
-    return idArray.join(',');
+    if (typeof(parseInt(idArray, 10)) === 'number') {
+        return idArray.toString();
+    }
+
+    throw new Error('Pass array or integer');
 };

@@ -2,20 +2,34 @@
 
 var config = require('../config');
 
-module.exports = function (objs, keys) {
+/**
+ * Append url string taken from config to image fields.
+ * @param instances - Array of objects from DB.
+ * @param keys - Keys where to prepend server url.
+ * @return {Array|*}
+ */
+module.exports = function (instances, keys) {
 
     var serverUrl = config.serverUrl;
 
-    for (var i in objs) {
-        if (objs.hasOwnProperty(i)) {
-            var obj = objs[i];
-            for (var key in obj) {
-                if (obj.hasOwnProperty(key) && keys.indexOf(key) >= 0 && obj[key].length !== 0) {
-                    objs[i][key] = serverUrl + obj[key];
-                }
+    if (typeof(keys) === 'string') {
+        return instances.map(function (instance) {
+            if (instance.hasOwnProperty(keys)) {
+                var newField = {};
+                newField[keys] = serverUrl + instance[keys];
+                return Object.assign({}, instance, newField)
             }
-        }
+            return instance;
+        });
     }
 
-    return objs;
+    return instances.map(function (instance) {
+        var newFields = {};
+        for (var key in instance) {
+            if (instance.hasOwnProperty(key) && keys.indexOf(key) !== -1) {
+                newFields[key] = serverUrl + instance[key];
+            }
+        }
+        return Object.assign({}, instance, newFields);
+    });
 };

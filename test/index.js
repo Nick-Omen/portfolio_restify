@@ -5,16 +5,16 @@ var connection = require('../db');
 var fs = require('fs');
 
 module.exports = function () {
-    console.log('api tests start');
-
     fs.readFile('./dump.sql', {encoding: 'utf8', flag: 'r'}, function (err, data) {
 
-        if(err){
+        console.log('api tests start');
+
+        if (err) {
             console.trace(err);
         }
 
         connection.query(data, function (err, rows) {
-            if(err){
+            if (err) {
                 console.trace(err);
             }
 
