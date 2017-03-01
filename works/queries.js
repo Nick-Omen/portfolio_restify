@@ -12,7 +12,8 @@ var getWorks = function () {
 
         connection.query(sql, function (err, rows) {
             if (err) {
-                reject('Mysql error.')
+                reject('Mysql error.');
+                return;
             }
 
             resolve(utils.appendServerUrlToImages(rows, ['thumbnail', 'logo']));
@@ -35,11 +36,13 @@ var addWork = function (work) {
         connection.query(sql, function (insertErr, insertRows) {
             if (insertErr) {
                 reject('Mysql error');
+                return;
             }
 
             connection.query("SELECT * FROM `works` WHERE `id`=" + insertRows.insertId, function (err, rows) {
                 if (err) {
                     reject('Mysql error');
+                    return;
                 }
 
                 resolve(utils.appendServerUrlToImages(rows, ['image', 'thumbnail', 'logo']));
@@ -64,7 +67,8 @@ var updateWork = function (id, work) {
         connection.query(sql, function (err, rows) {
 
             if (err) {
-                reject('Mysql error')
+                reject('Mysql error');
+                return;
             }
 
             return getWork(id);
@@ -89,6 +93,7 @@ var deleteWork = function (identifier) {
 
             if(err){
                 reject('Mysql error');
+                return;
             }
 
 
@@ -128,10 +133,10 @@ var getWork = function (identifier) {
 
         connection.query(sql, function (err, rows) {
             if (err) {
-                reject('Mysql error.')
+                reject('Mysql error.');
+                return;
             }
 
-            rows = utils.splitFields(rows, ['work_types', 'languages', 'technologies']);
             resolve(utils.appendServerUrlToImages(rows, ['image', 'logo']));
         });
     });

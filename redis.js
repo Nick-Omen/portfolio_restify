@@ -1,6 +1,6 @@
 "use strict";
 
-var redis = require("redis");
+var redis = require('redis');
 var Promise = require('bluebird');
 
 Promise.promisifyAll(redis.RedisClient.prototype);

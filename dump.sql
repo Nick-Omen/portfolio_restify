@@ -33,6 +33,7 @@ CREATE TABLE languages (
     name CHAR(120) NOT NULL DEFAULT "",
     slug CHAR(32) NOT NULL DEFAULT "",
     skill_level INT(3) NOT NULL DEFAULT 0,
+    image VARCHAR(60) NOT NULL DEFAULT '',
     experience DATE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 ALTER TABLE languages ADD UNIQUE `language_index`(`name`, `slug`);

@@ -15,6 +15,7 @@ var getLanguages = function () {
 
             if (err) {
                 reject('Mysql error.');
+                return;
             }
 
             resolve(rows);
@@ -22,20 +23,24 @@ var getLanguages = function () {
     })
 };
 
-var addLanguage = function (language) {
+var addLanguage = function (language, image) {
 
+    if (image) {
+        image = utils.uploadImage(image, 'language', 'languages');
+    }
     var lang_slug = utils.getSlug(language.name);
     var lang_experience = moment(new Date(language.experience));
-    var sql = "INSERT INTO `languages` (`name`, `slug`, `skill_level`, `experience`) VALUES "
+    var sql = "INSERT INTO `languages` (`name`, `slug`, `skill_level`, `experience`, `image`) VALUES "
         + "('" + language.name + "','" + lang_slug + "',"
-        + language.skill_level + ",'" + lang_experience.format('YYYY-MM-DD') + "')";
+        + language.skill_level + ",'" + lang_experience.format('YYYY-MM-DD') + "', '" + image + "')";
 
     return new Promise(function (resolve, reject) {
 
         connection.query(sql, function (err, rows) {
 
-            if(err) {
+            if (err) {
                 reject('Mysql error.');
+                return;
             }
 
             resolve({
@@ -43,6 +48,7 @@ var addLanguage = function (language) {
                 name: language.name,
                 slug: lang_slug,
                 skill_level: language.skill_level,
+                image: image,
                 experience: lang_experience.format('MM-DD-YYYY')
             })
         });
@@ -63,17 +69,21 @@ var updateLanguage = function (id, language) {
     return new Promise(function (resolve, reject) {
         connection.query(sql, function (err, rows) {
 
-            if(err) {
-                reject('Mysql error.')
+            if (err) {
+                reject('Mysql error.');
+                return;
             }
 
             connection.query("SELECT * FROM `languages` WHERE `id` = " + id + " LIMIT 1", function (err, rows) {
 
-                if(err){
+                if (err) {
                     reject('Mysql error');
                 }
+                var lang = rows[0];
 
-                resolve(rows[0]);
+                resolve(Object.assign({}, lang, {
+                    experience: moment(new Date(lang.experience)).format('MM-DD-YYYY')
+                }));
             })
         })
     });
@@ -87,8 +97,9 @@ var deleteLanguage = function (id) {
 
         connection.query(sql, function (err, rows) {
 
-            if(err){
+            if (err) {
                 reject('Mysql error.');
+                return;
             }
 
             resolve({

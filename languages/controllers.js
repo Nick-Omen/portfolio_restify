@@ -41,7 +41,11 @@ var getLanguages = function (req, res, next) {
  */
 var addLanguage = function (req, res, next) {
 
-    queries.addLanguage(req.body)
+    if (req.files && req.files['image']) {
+        var image = req.files['image'];
+    }
+
+    queries.addLanguage(req.body, image)
         .then(function (data) {
 
             res.send(201, data);

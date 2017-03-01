@@ -17,7 +17,8 @@ var getTechnologies = function () {
         connection.query(sql, function (err, rows) {
 
             if (err) {
-                reject(err);
+                reject('Mysql error.');
+                return;
             }
 
             resolve(rows);
@@ -47,6 +48,7 @@ var addTechnology = function (technology, files) {
 
             if(err) {
                 reject('Mysql error.');
+                return;
             }
 
             resolve({
@@ -72,13 +74,15 @@ var updateTechnology = function (id, technology) {
         connection.query(sql, function (err, rows) {
 
             if(err) {
-                reject('Mysql error')
+                reject('Mysql error');
+                return;
             }
 
             connection.query("SELECT * FROM `technologies` WHERE `id` = " + id + " LIMIT 1", function (err, rows) {
 
                 if(err){
                     reject('Mysql error');
+                    return;
                 }
 
                 resolve(rows[0]);
@@ -97,6 +101,7 @@ var deleteTechnology = function (id) {
 
             if(err){
                 reject('Mysql error');
+                return;
             }
 
             resolve({

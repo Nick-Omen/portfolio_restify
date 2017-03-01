@@ -4,10 +4,10 @@
   "description": "REST-api for my portfolio.",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=dev nodemon index.js init",
-    "test-api": "NODE_ENV=test node test/index.js",
-    "test-utils": "NODE_ENV=test node ./node_modules/mocha/bin/mocha",
-    "tests": "npm run test-utils"
+    "start": "NODE_ENV=dev nodemon index.js",
+    "test-api": "NODE_ENV=test node test/api.js init",
+    "test-utils": "NODE_ENV=test node ./node_modules/mocha/bin/mocha test/index.js",
+    "tests": "npm run test-api && npm run test-utils"
   },
   "author": "",
   "license": "ISC",

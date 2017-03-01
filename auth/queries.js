@@ -27,6 +27,7 @@ var signUp = function (username, password) {
 
             if (err) {
                 reject('Mysql error');
+                return;
             }
 
             if (!rows.length) {
@@ -41,6 +42,7 @@ var signUp = function (username, password) {
 
                     if (err) {
                         reject('Mysql error');
+                        return;
                     }
 
                     if (rows.affectedRows === 1 && rows.insertId) {
@@ -72,13 +74,14 @@ var signIn = function (username, password) {
 
             if (err) {
                 reject('Mysql error.');
+                return;
             }
 
             if (rows.length === 0) {
 
                 reject({
                     message: 'User is not exists.'
-                })
+                });
             } else {
 
                 var salt = rows[0]['salt'];
@@ -92,6 +95,7 @@ var signIn = function (username, password) {
 
                     if (err) {
                         reject(err);
+                        return;
                     }
 
                     if (rows.length === 0) {

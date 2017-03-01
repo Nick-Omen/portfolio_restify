@@ -12,6 +12,10 @@ module.exports = function (instances, keys) {
 
     var serverUrl = config.serverUrl;
 
+    if(typeof(instances) === 'string' && keys === true) {
+        return serverUrl + instances;
+    }
+
     if (typeof(keys) === 'string') {
         return instances.map(function (instance) {
             if (instance.hasOwnProperty(keys)) {

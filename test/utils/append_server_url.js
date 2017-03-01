@@ -84,4 +84,9 @@ describe('Append server url to object by field name', function() {
         result.should.have.lengthOf(3);
         result.should.eql(expectedResults);
     });
+    it('should apply server string url to single string if key = true', function () {
+        var result = appendServerUrlToImages('image.jpg', true);
+        result.should.be.a('string');
+        result.should.eql(config.serverUrl + 'image.jpg');
+    })
 });

@@ -15,12 +15,12 @@ var server = restify.createServer({
 var bodyParserConfig = {
     maxBodySize: 0,
     mapParams: true,
-    mapFiles: false,
+    mapFiles: true,
     overrideParams: false,
-    keepExtensions: true,
-    uploadDir: path.resolve(__dirname, 'tmp'),
+    hash: 'sha1',
     multiples: true,
-    hash: 'sha1'
+    uploadDir: path.resolve(__dirname, 'tmp'),
+    keepExtensions: true
 };
 
 var checkAuthorization = function (token) {
@@ -32,6 +32,7 @@ var checkAuthorization = function (token) {
                 reject({
                     message: 'Session not found'
                 });
+                return;
             }
             res = JSON.parse(res);
 
@@ -39,7 +40,8 @@ var checkAuthorization = function (token) {
 
                 reject({
                     message: 'Session expired'
-                })
+                });
+                return;
             }
 
             resolve(true);
