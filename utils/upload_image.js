@@ -6,12 +6,12 @@ var moment = require('moment');
 
 var isImage = function (type) {
 
-    return /^image\/(png|jpe?g|gif)$/.test(type);
+    return /^image\/(png|jpe?g|gif|svg(\+xml)?)$/.test(type);
 };
 
 var getImageType = function (type) {
 
-    return type.replace('image/', '');
+    return type.replace('image/', '').replace('+xml', '');
 };
 
 module.exports = function (file, name, filePath) {

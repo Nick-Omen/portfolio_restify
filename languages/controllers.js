@@ -73,7 +73,11 @@ var addLanguage = function (req, res, next) {
  */
 var updateLanguage = function (req, res, next) {
 
-    queries.updateLanguage(req.params[0], req.body)
+    if (req.files && req.files['image']) {
+        var image = req.files['image'];
+    }
+
+    queries.updateLanguage(req.params[0], req.body, image)
         .then(function (data) {
 
             res.send(200, data);

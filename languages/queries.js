@@ -27,7 +27,10 @@ var addLanguage = function (language, image) {
 
     if (image) {
         image = utils.uploadImage(image, 'language', 'languages');
+    } else {
+        image = '';
     }
+
     var lang_slug = utils.getSlug(language.name);
     var lang_experience = moment(new Date(language.experience));
     var sql = "INSERT INTO `languages` (`name`, `slug`, `skill_level`, `experience`, `image`) VALUES "
@@ -55,15 +58,27 @@ var addLanguage = function (language, image) {
     })
 };
 
-var updateLanguage = function (id, language) {
+var updateLanguage = function (id, language, image) {
 
     var lang_experience = moment(new Date(language.experience));
+
+    console.log(image);
+    if (image) {
+        image = utils.uploadImage(image, 'language', 'languages');
+    } else {
+        image = '';
+    }
+
+    console.log(image);
 
     var sql = "UPDATE `languages` SET "
         + "`name` = '" + language.name + "',"
         + "`slug` = '" + utils.getSlug(language.name) + "',"
-        + "`skill_level` = '" + language.skill_level + "',"
-        + "`experience` = '" + lang_experience.format('YYYY-MM-DD') + "'"
+        + "`skill_level` = '" + language.skill_level + "',";
+    if (image) {
+        sql += "`image` = '" + image + "', ";
+    }
+    sql += "`experience` = '" + lang_experience.format('YYYY-MM-DD') + "'"
         + "WHERE `id` = " + id;
 
     return new Promise(function (resolve, reject) {
